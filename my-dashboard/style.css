@@ -48,7 +48,8 @@ a { color: inherit; }
 #retry-button { margin-left: auto; padding: 10px 15px; border: 1px solid var(--ink); border-radius: 10px; color: white; background: var(--ink); cursor: pointer; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-.success-banner { margin-top: -22px; position: relative; z-index: 2; padding: 14px 20px; border: 1px solid var(--ink); border-radius: 14px; background: var(--lime); font-weight: 700; }
+.success-banner { margin-top: -22px; position: relative; z-index: 2; padding: 14px 20px; border: 1px solid var(--ink); border-radius: 14px; background: var(--lime); font-weight: 700; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.success-banner button { padding: 8px 11px; border: 1px solid var(--ink); border-radius: 9px; background: transparent; cursor: pointer; white-space: nowrap; }
 .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; padding-block: 24px 68px; }
 .metrics article { min-height: 185px; padding: 23px; display: flex; flex-direction: column; border: 1px solid var(--ink); border-radius: 20px; background: var(--surface); }
 .metrics article:nth-child(2) { background: #e9e5ff; }

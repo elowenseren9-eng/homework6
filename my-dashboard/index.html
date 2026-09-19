@@ -44,7 +44,10 @@
     </section>
 
     <div id="dashboard-content" hidden>
-      <section id="success-banner" class="success-banner shell" aria-live="polite"></section>
+      <section id="success-banner" class="success-banner shell" aria-live="polite">
+        <span id="success-detail"></span>
+        <button id="refresh-button" type="button">重新获取数据</button>
+      </section>
 
       <section class="metrics shell" aria-label="核心指标">
         <article><span>ROOMS</span><strong id="metric-rooms">0</strong><p>纳入统计的空间</p></article>

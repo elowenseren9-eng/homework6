@@ -262,7 +262,7 @@ const showSuccess = (books, roomData, elapsed) => {
   appState.rooms = roomData.rooms;
   $("#status").prop("hidden", true);
   $("#dashboard-content").prop("hidden", false);
-  $("#success-banner").text(`全部完成：books.json 与 studyrooms.json 已并行加载并校验，共 ${books.months.length * books.series.length} 个借阅数据点、${roomData.rooms.length} 个自习空间；耗时 ${elapsed.toFixed(1)} ms。`);
+  $("#success-detail").text(`全部完成：books.json 与 studyrooms.json 已并行加载并校验，共 ${books.months.length * books.series.length} 个借阅数据点、${roomData.rooms.length} 个自习空间；耗时 ${elapsed.toFixed(1)} ms。`);
   requestAnimationFrame(() => {
     renderDashboard();
     renderIntegrityCharts(books);
@@ -351,7 +351,11 @@ $("#room-table").on("click", "tr[data-room]", function () {
 });
 
 $("#run-benchmark").on("click", runBenchmark);
-$("#retry-button").on("click", () => { window.location.href = "./"; });
+$("#refresh-button").on("click", loadData);
+$("#retry-button").on("click", () => {
+  if (mode === "error") window.location.href = "./";
+  else loadData();
+});
 
 window.addEventListener("resize", () => {
   [roomChart, misleadingChart, honestChart].forEach((chart) => chart?.resize());

@@ -39,7 +39,7 @@ py -m http.server 8016
 空数据  http://localhost:8016/my-dashboard/?state=empty
 ```
 
-若教师要求真实断网证据：先保持成功页面打开，按F12进入Network，切换Offline，然后点击页面“重新加载”或在Console执行 `location.reload()`；恢复Online后再继续。
+若教师要求真实断网证据：先打开正常成功页面，按F12进入Network，勾选Disable cache并切换Offline；保持页面不刷新，点击成功横幅中的“重新获取数据”，即可看到应用内“加载失败”与Network失败记录。截图后切回Online，点击“重新加载”即可恢复。不要在Offline时刷新整个网页，否则浏览器可能连页面本身都无法打开。
 
 ## 常见问题
 
@@ -47,4 +47,3 @@ py -m http.server 8016
 - 端口被占用：把启动命令和所有地址中的8016统一改为8017。
 - 图表空白：先检查Console和Network，再确认库文件与JSON请求均为200。
 - 想恢复默认状态：删除网址问号后的参数并刷新。
-
