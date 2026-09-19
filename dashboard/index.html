@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>图书馆借阅数据看板</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a href="../" class="back-link">← 返回作品集</a>
+    <nav aria-label="状态演示">
+      <span>状态演示</span>
+      <a href="./">成功</a>
+      <a href="?state=loading">加载中</a>
+      <a href="?state=error">失败</a>
+      <a href="?state=empty">空数据</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="intro">
+      <div>
+        <p class="eyebrow">CASE REPRODUCTION · 双图表库</p>
+        <h1>图书馆借阅<br>数据看板</h1>
+      </div>
+      <div class="intro-note">
+        <p id="sub-title">正在读取课程统一数据集</p>
+        <span>统计单位：册</span>
+      </div>
+    </section>
+
+    <section id="status" class="status-panel" aria-live="polite">
+      <span class="spinner" aria-hidden="true"></span>
+      <div>
+        <strong id="status-title">加载中</strong>
+        <p id="status-detail">正在通过 fetch 请求本地 JSON 数据…</p>
+      </div>
+      <button id="retry-button" type="button" hidden>重新加载</button>
+    </section>
+
+    <div id="dashboard-content" hidden>
+      <section id="cards" class="metric-grid" aria-label="品类累计借阅统计"></section>
+
+      <section class="chart-grid">
+        <article class="chart-card chart-card-dark">
+          <div class="chart-heading">
+            <div>
+              <p>ECHARTS · BAR</p>
+              <h2>各月各品类借阅量</h2>
+            </div>
+            <span>单位：册</span>
+          </div>
+          <div id="bar-chart" class="chart-box" role="img" aria-label="各月各品类借阅量柱状图"></div>
+          <p class="source">来源：课程统一数据集（教学演示数据，非真实统计）</p>
+        </article>
+
+        <article class="chart-card">
+          <div class="chart-heading">
+            <div>
+              <p>CHART.JS · LINE</p>
+              <h2>年度借阅趋势</h2>
+            </div>
+            <span>单位：册</span>
+          </div>
+          <div class="chart-box"><canvas id="line-chart" aria-label="年度借阅趋势折线图"></canvas></div>
+          <p class="source">来源：课程统一数据集（教学演示数据，非真实统计）</p>
+        </article>
+      </section>
+
+      <p class="interaction-tip">试一试：点击上方统计卡片，可用 jQuery 高亮对应品类；点击图例可开关系列。</p>
+    </div>
+  </main>
+
+  <script src="../libs/jquery-3.7.1.min.js"></script>
+  <script src="../libs/echarts-5.6.0.min.js"></script>
+  <script src="../libs/chart-4.4.7.umd.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
+
