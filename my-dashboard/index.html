@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="校园学习空间数据看板，展示自习室座位、开放状态和图书借阅趋势">
+  <title>校园学习空间数据看板</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar shell">
+    <a class="brand" href="../"><span>YNU</span> 学习空间观察站</a>
+    <nav aria-label="四状态演示">
+      <b>状态演示</b>
+      <a href="./">成功</a>
+      <a href="?state=loading">加载中</a>
+      <a href="?state=error">失败</a>
+      <a href="?state=empty">空数据</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero shell">
+      <div class="hero-copy">
+        <p class="eyebrow">CAMPUS DATA · 2026</p>
+        <h1>今天，哪里<br>还有座位？</h1>
+        <p>把自习室实时占用与图书借阅数据放在同一个学习资源看板中，用图表帮助同学快速选择空间，也用诚实坐标轴呈现变化。</p>
+      </div>
+      <div class="hero-badge" aria-hidden="true">
+        <span>LIVE</span>
+        <strong id="hero-availability">--</strong>
+        <small>可用座位</small>
+      </div>
+    </section>
+
+    <section id="status" class="status shell" aria-live="polite">
+      <span class="status-icon" aria-hidden="true"></span>
+      <div>
+        <strong id="status-title">加载中</strong>
+        <p id="status-detail">正在并行请求 books.json 与 studyrooms.json…</p>
+      </div>
+      <button id="retry-button" type="button" hidden>重新加载</button>
+    </section>
+
+    <div id="dashboard-content" hidden>
+      <section id="success-banner" class="success-banner shell" aria-live="polite"></section>
+
+      <section class="metrics shell" aria-label="核心指标">
+        <article><span>ROOMS</span><strong id="metric-rooms">0</strong><p>纳入统计的空间</p></article>
+        <article><span>OPEN</span><strong id="metric-open">0</strong><p>当前开放</p></article>
+        <article><span>SEATS</span><strong id="metric-seats">0</strong><p>总座位</p></article>
+        <article><span>AVAILABLE</span><strong id="metric-available">0</strong><p>开放空间剩余</p></article>
+      </section>
+
+      <section class="workspace shell">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">EXPLORE THE ROOMS</p>
+            <h2>自习空间使用情况</h2>
+          </div>
+          <p>柱状图回答“哪里最拥挤”，圆环图回答“已占与可用的构成”。点击任意柱，右图和表格会联动。</p>
+        </div>
+
+        <div class="filters">
+          <div id="building-filters" class="filter-buttons" role="group" aria-label="按楼宇筛选"></div>
+          <label class="search-box">
+            <span>搜索</span>
+            <input id="room-search" type="search" placeholder="输入自习室名称" autocomplete="off">
+          </label>
+        </div>
+
+        <div class="chart-layout">
+          <article class="panel panel-wide">
+            <div class="panel-heading">
+              <div><p>ECHARTS · BAR</p><h3>各自习室占用率</h3></div>
+              <span>单位：%</span>
+            </div>
+            <div id="room-chart" class="chart" role="img" aria-label="各自习室占用率柱状图"></div>
+            <p class="chart-note">占用率从 0% 起算；维修和闭馆空间单独标灰。点击柱形查看座位构成。</p>
+          </article>
+
+          <article class="panel panel-accent">
+            <div class="panel-heading">
+              <div><p>CHART.JS · DOUGHNUT</p><h3 id="seat-chart-title">筛选结果座位构成</h3></div>
+              <button id="reset-linkage" type="button">查看全部</button>
+            </div>
+            <div class="chart chart-small"><canvas id="seat-chart" aria-label="座位使用构成圆环图"></canvas></div>
+            <p id="linkage-note" class="chart-note">点击左侧柱状图，查看单个自习室。</p>
+          </article>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>自习室</th><th>楼宇</th><th>开放时间</th><th>状态</th><th>座位</th><th>已占</th><th>剩余</th><th>占用率</th></tr></thead>
+            <tbody id="room-table"></tbody>
+          </table>
+          <p id="table-empty" class="table-empty" hidden>没有符合筛选条件的自习室。</p>
+        </div>
+        <p class="source-line">数据来源：课程统一数据集（教学演示数据，非真实统计） · 数据范围：12处校园学习空间</p>
+      </section>
+
+      <section class="research shell" id="research">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">OPTIONAL RESEARCH</p>
+            <h2>三项独立研究</h2>
+          </div>
+          <p>研究功能均可在页面现场操作，并在仓库 research 目录保留原理、来源和实验记录。</p>
+        </div>
+
+        <article class="research-card benchmark-card">
+          <div class="research-index">R1</div>
+          <div class="research-copy">
+            <p class="eyebrow">PROMISE.ALL</p>
+            <h3>并行请求与串行请求计时</h3>
+            <p>对同一组 books.json 和 studyrooms.json 请求设置每项至少 220ms 的教学模拟延迟，使本地环境也能稳定观察并行与串行差别。实际数据仍通过 fetch 获取。</p>
+            <button id="run-benchmark" class="primary-button" type="button">运行计时实验</button>
+          </div>
+          <div class="benchmark-result" aria-live="polite">
+            <div><span>串行总耗时</span><strong id="serial-time">--</strong></div>
+            <div><span>并行总耗时</span><strong id="parallel-time">--</strong></div>
+            <p id="benchmark-summary">点击按钮后记录本机实测结果。</p>
+          </div>
+        </article>
+
+        <article class="research-card linkage-card">
+          <div class="research-index">R2</div>
+          <div class="research-copy">
+            <p class="eyebrow">ECHARTS EVENTS</p>
+            <h3>柱形点击驱动圆环图</h3>
+            <p>ECharts 的 click 事件返回被点击数据的 name。程序用名称查找自习室，再更新 Chart.js 的 labels、data 与标题，并高亮表格对应行。上方主图已完整实现。</p>
+          </div>
+          <a class="text-link" href="#room-chart">回到联动图表 ↑</a>
+        </article>
+
+        <article class="research-card misleading-card">
+          <div class="research-index">R3</div>
+          <div class="research-copy">
+            <p class="eyebrow">HONEST AXIS</p>
+            <h3>误导图表修复实验</h3>
+            <p class="analysis">2012年Fox Business播出的“If Bush Tax Cuts Expire”柱状图把35%与39.6%的差异画得近似数倍，问题在于纵轴从约34%起步且未明确展示零点，柱长不再对应数值比例。下面用课程图书借阅总量复现同类问题：左图把纵轴起点抬到接近最小值，普通月度波动被视觉放大；右图保留完全相同的数据和柱宽，但纵轴从0开始，并补齐单位、时间范围与数据来源。诚实版本仍能看出11月较高、8月较低，却不会让约两百册的差异看起来像数量翻倍。柱状图依赖长度比较，因此除非明确表达局部变化并突出断轴，基线应从0开始。</p>
+            <p class="reference">真实案例参考：People’s Graphic Design Archive，Fox News “If Bush Tax Cuts Expire” (2012)。</p>
+          </div>
+          <div class="compare-grid">
+            <div><h4>错误示范：截断纵轴</h4><div id="misleading-chart" class="compare-chart"></div></div>
+            <div><h4>修复版本：从零开始</h4><div id="honest-chart" class="compare-chart"></div></div>
+          </div>
+        </article>
+      </section>
+    </div>
+  </main>
+
+  <footer class="shell">
+    <p>课程统一教学演示数据 · 图表单位和来源均已标注</p>
+    <a href="../research/README.md">查看研究记录</a>
+  </footer>
+
+  <script src="../libs/jquery-3.7.1.min.js"></script>
+  <script src="../libs/echarts-5.6.0.min.js"></script>
+  <script src="../libs/chart-4.4.7.umd.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
+
