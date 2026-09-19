@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>课堂任务清单 · jQuery版</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app-shell">
+    <a class="back-link" href="../">← 返回作品集</a>
+
+    <header class="page-header">
+      <p class="kicker">JQUERY REWRITE</p>
+      <h1>课堂任务<br>清单</h1>
+      <p>使用 jQuery 选择器、链式调用、事件委托和效果方法重写原生任务清单。</p>
+    </header>
+
+    <section class="task-panel" aria-labelledby="panel-title">
+      <div class="panel-heading">
+        <div>
+          <p class="label">TODAY</p>
+          <h2 id="panel-title">要完成什么？</h2>
+        </div>
+        <p id="task-stats" class="stats" aria-live="polite">0 项任务</p>
+      </div>
+
+      <form id="task-form" novalidate>
+        <label for="task-input">任务名称</label>
+        <div class="input-row">
+          <input id="task-input" name="task" maxlength="60" autocomplete="off" placeholder="例如：完成数据看板测试">
+          <button type="submit">添加任务</button>
+        </div>
+        <p id="form-tip" class="form-tip" role="status" aria-live="polite"></p>
+      </form>
+
+      <div class="filter-row" role="group" aria-label="筛选任务">
+        <button class="filter is-active" type="button" data-filter="all" aria-pressed="true">全部</button>
+        <button class="filter" type="button" data-filter="active" aria-pressed="false">未完成</button>
+        <button class="filter" type="button" data-filter="done" aria-pressed="false">已完成</button>
+        <button id="clear-completed" class="clear-button" type="button">清除已完成</button>
+      </div>
+
+      <ul id="task-list" class="task-list" aria-label="任务列表"></ul>
+    </section>
+
+    <footer>
+      <span>数据保存在 localStorage</span>
+      <span>事件委托绑定在列表容器</span>
+    </footer>
+  </main>
+
+  <script src="../libs/jquery-3.7.1.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
+
